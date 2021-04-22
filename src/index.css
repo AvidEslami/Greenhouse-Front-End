@@ -1,25 +1,28 @@
-.btn-xxl {
-  padding: 0.5rem 2rem;
-  font-size: 0.75rem;
-}
-.header {
-  font-size: 5rem;
-  color: white;
-  line-height: 0.3;
-}
-.caption {
-  font-size: 1rem;
-  color: white;
+.content_row {
+    background-color: aliceblue;
+    border-radius: 10px;
 }
 
-#debugging_buttons {
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
+.alert_circle_red {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: red;
+    position: relative;
+    left: calc(50% - 25px);
 }
 
-#debugging_buttons .btn-flat {
-margin: 0.25rem;
-  background-color: purple;
-  color: red;
+.alert_circle_green {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: green;
+    position: relative;
+    left: calc(50% - 25px);
+}
+
+#debugging .btn {
+    margin: 0.25rem;
+    background-color: red;
+    color: white;
 }

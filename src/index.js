@@ -1,212 +1,98 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import Button from 'react-bootstrap/Button';
-import Figure from 'react-bootstrap/Figure'
-import FigureImage from 'react-bootstrap/FigureImage'
-import redStatus from './images/red.png';
-import greyStatus from './images/grey.png';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import $ from "jquery";
-import "jquery/dist/jquery.slim.js";
-import "bootstrap/dist/css/bootstrap.css"; 
-import "bootstrap4-toggle/css/bootstrap4-toggle.min.css";
-import BootstrapSwitchButton from 'bootstrap-switch-button-react'
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import "bootstrap/dist/css/bootstrap.css";
+import Figure from "react-bootstrap/Figure";
 
-var AlarmState1 = false;
-var AlarmState2 = false;
-var AlarmState3 = false;
-var FirstInput = false;
-
-class NameForm extends React.Component {
-
-  Tester() {
-    AlarmState1 = true;
-    console.log(AlarmState1)
-    ReactDOM.render([<NameForm />,<Alarm1Status />,<Alarm2Status />,<Alarm3Status />,<Input1 />], document.getElementById('root'));
+class Main extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      alarms: {
+        one: {
+          class: "alert_circle_red",
+          caption: "Alarm 1"
+        },
+        two: {
+          class: "alert_circle_red",
+          caption: "Alarm 2"
+        },
+        three: {
+          class: "alert_circle_red",
+          caption: "Alarm 3"
+        }
+      }
+    };
   }
-  Tester2() {
-    if (AlarmState2 = true) {
-      AlarmState2 = false;
-      AlarmState3 = true
-    } else if (AlarmState1 = true) {
-      AlarmState1 = false;
-      AlarmState2 = true;
+
+  button_one_handler = () => {
+    console.log("button_one_handler");
+    if (this.state.alarms.one.class==="alert_circle_red") {
+    this.state.alarms.one.class = "alert_circle_green"
+    } else {
+      this.state.alarms.one.class = "alert_circle_red"
     }
-    ReactDOM.render([<NameForm />,<Alarm1Status />,<Alarm2Status />,<Alarm3Status />,<Input1 />], document.getElementById('root'));
-  }
+    render_app()
+  };
 
+  button_two_handler = () => {
+    console.log("button_two_handler");
+    this.state.alarms.two.class = "alert_circle_green"
+    render_app()
+  };
 
+  button_three_handler = () => {
+    console.log("button_three_handler");
+    this.state.alarms.three.class = "alert_circle_green"
+    render_app()
+  };
 
   render() {
     return (
-      <div className="header">
-        <br />
-        <header>
-          Alarms
-        </header>
-
-        <div id="debugging_buttons">
-            <Button variant="flat" size="xxl" onClick={this.Tester}>Start Fire</Button>
-            <Button variant="flat" size="xxl" onClick={this.Tester2}>Transfer Fire</Button>
+      <div id="main">
+        <section id="alerts">
+          <div className="row">
+            <div className="col">Alerts</div>
           </div>
 
+          <div className="content_row">
+            <div className="row">
+              <div id="alarm_1" className="col text-center">
+                <div className={this.state.alarms.one.class}></div>
+                <div className="alert_caption">{this.state.alarms.one.caption}</div>
+              </div>
+              <div id="alarm_2" className="col text-center">
+                <div className={this.state.alarms.two.class}></div>
+                <div className="alert_caption">{this.state.alarms.two.caption}</div>
+              </div>
+              <div id="alarm_3" className="col text-center">
+                <div className={this.state.alarms.three.class}></div>
+                <div className="alert_caption">{this.state.alarms.three.caption}</div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="inputs"></section>
+        <section id="outputs"></section>
+
+        <section id="debugging">
+          <div className="btn" onClick={this.button_one_handler}>
+            One
+          </div>
+          <div className="btn" onClick={this.button_two_handler}>
+            Two
+          </div>
+          <div className="btn" onClick={this.button_three_handler}>
+            Three
+          </div>
+        </section>
       </div>
-            
-
     );
   }
 }
 
-class Alarm1Status extends React.Component{
-  render() {
-      if (AlarmState1) {
-        console.log("if is running");
-        return (
-                <Figure>
-                  <Figure.Image
-                    width={50}
-                    height={50}
-                    alt="red"
-                    src={redStatus}
-                  />
-                  <Figure.Caption class="caption">
-                    Alarm 1
-                  </Figure.Caption>
-                </Figure>
-        )
-          } else {
-            console.log("else is running");
-            return (
-                <Figure>
-                  <Figure.Image
-                    width={50}
-                    height={50}
-                    alt="grey"
-                    src={greyStatus}
-                  />
-                  <Figure.Caption class="caption">
-                    Alarm 1
-                  </Figure.Caption>
-                </Figure>
-
-            )
-          }
-  }
+const render_app = () => {
+  ReactDOM.render([<Main />], document.getElementById("root"));
 }
 
-class Alarm2Status extends React.Component{
-  render() {
-      if (AlarmState2) {
-        console.log("if is running");
-        return (
-      // <Container alarm2>
-      //       <Row>
-      //         <Col></Col>
-                <Figure>
-                  <Figure.Image
-                    width={50}
-                    height={50}
-                    alt="red"
-                    src={redStatus}
-                  />
-                  <Figure.Caption class="caption">
-                    Alarm 2
-                  </Figure.Caption>
-                </Figure>
-                // </Row>
-          // </Container>
-        )
-          } else {
-            console.log("else is running");
-            return (
-            // <Container alarm2>
-            // <Row>
-                <Figure>
-                  <Figure.Image
-                    width={50}
-                    height={50}
-                    alt="grey"
-                    src={greyStatus}
-                  />
-                  <Figure.Caption class="caption">
-                    Alarm 2
-                  </Figure.Caption>
-                </Figure>
-                
-                // </Row>
-         // </Container> 
-            )
-          }
-  }
-}
-
-class Alarm3Status extends React.Component{
-  render() {
-      if (AlarmState3) {
-        console.log("if is running");
-        return (
-      // <Container alarm2>
-      //       <Row>
-      //         <Col></Col>
-                <Figure>
-                  <Figure.Image
-                    width={50}
-                    height={50}
-                    alt="red"
-                    src={redStatus}
-                  />
-                  <Figure.Caption class="caption">
-                    Alarm 3
-                  </Figure.Caption>
-                </Figure>
-                // </Row>
-          // </Container>
-        )
-          } else {
-            console.log("else is running");
-            return (
-                <Figure>
-                  <Figure.Image
-                    width={50}
-                    height={50}
-                    alt="grey"
-                    src={greyStatus}
-                  />
-                  <Figure.Caption class="caption">
-                    Alarm 3
-                  </Figure.Caption>
-                </Figure>
-            )
-          }
-  }
-}
-
-class Input1 extends React.Component {
-  render() {
-    return (
-      <BootstrapSwitchButton
-        checked={false}
-        onlabel='ON'
-        onstyle='success'
-        offlabel='OFF'
-        offstyle='danger'
-        style='w-10 mx-2'
-        onChange={(checked) => {
-          this.setState({ isUserAdmin: checked })
-          console.log(checked);
-          FirstInput = checked;
-          console.log(FirstInput);
-        }}
-      />
-    );
-  }
-}
-
-
-
-
-document.body.style = 'background: #04052e;';
-ReactDOM.render([<NameForm />,<Alarm1Status />,<Alarm2Status />,<Alarm3Status />,<Input1 />], document.getElementById('root'));
+render_app()
