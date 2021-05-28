@@ -1,9 +1,10 @@
 .content_row {
-    background-color: aliceblue;
+    background-color: #000080;
     border-radius: 10px;
 }
 
 .alert_circle_red {
+    animation: blink 0.5s steps(1, end) infinite;
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -12,13 +13,85 @@
     left: calc(50% - 25px);
 }
 
-.alert_circle_green {
+.alert_circle_dismissed {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: red;
+    position: relative;
+    left: calc(50% - 25px);
+}
+
+.alert_circle_grey {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: grey;
+    position: relative;
+    left: calc(50% - 25px);
+}
+
+@keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    25% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+
+
+
+
+.input_circle_green {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     background-color: green;
     position: relative;
     left: calc(50% - 25px);
+}
+
+.input_circle_red {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: red;
+    position: relative;
+    left: calc(50% - 25px);
+}
+
+.output_switch {
+    position: relative;
+    right: calc(50% - 25px);
+}
+
+#alerts {
+    color: #ffffff;
+}
+
+#inputs {
+    color: #ffffff;
+}
+
+#outputs {
+    color: #ffffff;
+}
+
+#alerts .btn {
+    margin: 0.25rem;
+    background-color: red;
+    color: white;
 }
 
 #debugging .btn {
