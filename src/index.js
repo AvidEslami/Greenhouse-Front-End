@@ -121,6 +121,11 @@ class Main extends React.Component {
     render_app();
   };
 
+  button_five_handler = () => {
+    fetch('http://192.168.1.26:5000/Inputs', { method: 'POST', body: 'blah blah'})
+    render_app();
+  };
+
   
 componentDidMount() {
   this.interval = setInterval(() => this.setState(this.button_five_handler), 1000);
@@ -305,6 +310,9 @@ componentWillUnmount() {
           <div className="btn" onClick={this.button_five_handler}>
             refreshPage
           </div>
+          <div className="btn" onClick={this.button_six_handler}>
+            Test an Input
+          </div>
         </section>
       </div>
     );
@@ -314,7 +322,7 @@ componentWillUnmount() {
 
 document.body.style = "background: #04052e;";
 const render_app = () => {
-  fetch('http://192.168.1.25:5000/')
+  fetch('http://192.168.1.26:5000/')
   .then(res => res.json())
   .then(data => obj = data)
   //.then(() => console.log(obj))
