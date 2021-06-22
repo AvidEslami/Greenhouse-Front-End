@@ -121,8 +121,12 @@ class Main extends React.Component {
     render_app();
   };
 
-  button_five_handler = () => {
-    fetch('http://192.168.1.26:5000/Inputs', { method: 'POST', body: 'blah blah'})
+  button_six_handler = () => {
+    var Tester = false
+    console.log(this.outputs.checked1)
+    var myJSON = '{"name":'+this.checked1+', "age":30, "car":null}';
+    fetch('http://192.168.1.26:5000/Inputs', { method: 'POST', mode: 'cors', body: myJSON})
+    // console.log(myObj)
     render_app();
   };
 
@@ -225,7 +229,8 @@ componentWillUnmount() {
                     offstyle="success"
                     style="w-10"
                     onChange={(checked1) => {
-                      this.setState({ isUserAdmin: checked1 });
+//                      this.setState({ isUserAdmin: checked1 });
+                      this.state.inputs.one.checked1 = checked1;
                       console.log(checked1);
                     }}
                   />
