@@ -7,8 +7,14 @@ import "jquery/dist/jquery.slim.js";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap4-toggle/css/bootstrap4-toggle.min.css";
 import BootstrapSwitchButton from "bootstrap-switch-button-react";
+var piip = "192.168.1.26:5000";
 var greenhouseData = String ;
+var main_power_status = String;
+var heater_status = String;
 var blower_status = String;
+var dehumidifier_status = String;
+var sump_pump_status = String;
+var hi_level_status = String;
 var obj;
 
 
@@ -83,7 +89,7 @@ class Main extends React.Component {
   button_two_handler = () => {
     console.log("button_two_handler");
     if (this.state.alarms.two.class === "alert_circle_red") {
-      this.state.alarms.two.class = "alert_circle_grey";
+      console.log("Alarm 2 is still running")
     } else {
       this.state.alarms.two.class = "alert_circle_red";
     }
@@ -111,20 +117,51 @@ class Main extends React.Component {
   };
 
   button_five_handler = () => {
-    blower_status = greenhouseData.substring(greenhouseData.indexOf("Blower") + 8, greenhouseData.indexOf("Heater") - 2);
-    console.log(blower_status)
-    if (blower_status === "true") {
+    const greenhouseJSON = JSON.parse(greenhouseData)[0]
+    //blower_status = greenhouseData.substring(greenhouseData.indexOf("Main_Power") + 12, greenhouseData.indexOf("Heater") - 2);
+    //simultaneous_status = greenhouseData.substring(greenhouseData.indexOf("Heater") + 8, greenhouseData.indexOf("}") - 0);
+    heater_status = greenhouseJSON.Heater
+    main_power_status = greenhouseJSON.Main_Power
+    blower_status = greenhouseJSON.Blower
+    dehumidifier_status = greenhouseJSON.Dehumidifier
+    sump_pump_status = greenhouseJSON.Sump_Pump
+    hi_level_status = greenhouseJSON.Hi_Level
+    console.log(main_power_status)
+    console.log(heater_status)
+    if (blower_status === true) {
       this.state.inputs.one.class = "input_circle_green";
-    } else if (blower_status === "false") {
+    } else if (blower_status === false) {
       this.state.inputs.one.class = "input_circle_red";
+    }
+    if (heater_status === true) {
+      this.state.inputs.two.class = "input_circle_green";
+    } else if (heater_status === false) {
+      this.state.inputs.two.class = "input_circle_red";
+    }
+    if (dehumidifier_status === true) {
+      this.state.inputs.three.class = "input_circle_green";
+    } else if (dehumidifier_status === false) {
+      this.state.inputs.three.class = "input_circle_red";
+    }
+    if (sump_pump_status === true) {
+      this.state.inputs.four.class = "input_circle_green";
+    } else if (sump_pump_status === false) {
+      this.state.inputs.four.class = "input_circle_red";
+    }
+    if (main_power_status === true) {
+      this.state.inputs.five.class = "input_circle_green";
+    } else if (main_power_status === false) {
+      this.state.inputs.five.class = "input_circle_red";
+    }
+    if (hi_level_status === true) {
+      this.button_two_handler()
     }
     render_app();
   };
 
   button_six_handler = () => {
     var Tester = false
-    console.log(this.outputs.checked1)
-    var myJSON = '{"name":'+this.checked1+', "age":30, "car":null}';
+    var myJSON = '{"1":'+this.state.inputs.one.checked1+':, "2":'+this.state.inputs.one.checked2+':, "3":'+this.state.inputs.one.checked3+' :, "4":'+this.state.inputs.one.checked4+'}';
     fetch('http://192.168.1.26:5000/Inputs', { method: 'POST', mode: 'cors', body: myJSON})
     // console.log(myObj)
     render_app();
@@ -133,6 +170,7 @@ class Main extends React.Component {
   
 componentDidMount() {
   this.interval = setInterval(() => this.setState(this.button_five_handler), 1000);
+  this.interval = setInterval(() => this.setState(this.button_six_handler), 1000);
 }
 componentWillUnmount() {
   clearInterval(this.interval);
@@ -251,7 +289,8 @@ componentWillUnmount() {
                     offstyle="success"
                     style="w-10"
                     onChange={(checked2) => {
-                      this.setState({ isUserAdmin: checked2 });
+//                     this.setState({ isUserAdmin: checked2 });
+                      this.state.inputs.one.checked2 = checked2;
                       console.log(checked2);
                     }}
                   />
@@ -272,8 +311,8 @@ componentWillUnmount() {
                     offstyle="success"
                     style="w-10"
                     onChange={(checked3) => {
-                      this.setState({ isUserAdmin: checked3 });
-                      console.log(checked3);
+//                     this.setState({ isUserAdmin: checked3 });
+                      this.state.inputs.one.checked3 = checked3;
                     }}
                   />
                 </div>
@@ -293,8 +332,8 @@ componentWillUnmount() {
                     offstyle="success"
                     style="w-10"
                     onChange={(checked4) => {
-                      this.setState({ isUserAdmin: checked4 });
-                      console.log(checked4);
+//                      this.setState({ isUserAdmin: checked4 });
+                        this.state.inputs.one.checked4 = checked4;
                     }}
                   />
                 </div>
@@ -309,15 +348,12 @@ componentWillUnmount() {
           <div className="btn" onClick={this.button_two_handler}>
             Alarm Two
           </div>
-          <div className="btn" onClick={this.button_four_handler}>
-            Blower On/Off
-          </div>
-          <div className="btn" onClick={this.button_five_handler}>
+          {/* <div className="btn" onClick={this.button_five_handler}>
             refreshPage
           </div>
           <div className="btn" onClick={this.button_six_handler}>
             Test an Input
-          </div>
+          </div> */}
         </section>
       </div>
     );
@@ -327,7 +363,7 @@ componentWillUnmount() {
 
 document.body.style = "background: #04052e;";
 const render_app = () => {
-  fetch('http://192.168.1.26:5000/')
+  fetch('http://192.168.1.26:5000')
   .then(res => res.json())
   .then(data => obj = data)
   //.then(() => console.log(obj))
@@ -346,5 +382,5 @@ const render_app = () => {
 // render_app();
 // sleep(30000)
 render_app();
-greenhouseData = '[{"Blower":false,"Heater":false}]';
+greenhouseData = '[{"Blower": false, "Dehumidifier": false, "Heater": false, "Main_Power": false}]';
 console.log(greenhouseData);
